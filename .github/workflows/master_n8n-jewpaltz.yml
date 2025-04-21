@@ -41,11 +41,14 @@ jobs:
           path: release.zip
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: [ubuntu-latest, xlarge]
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    env:
+      NODE_OPTIONS: --max_old_space_size=4096
+  
     permissions:
       id-token: write #This is required for requesting the JWT
       contents: read #This is required for actions/checkout
